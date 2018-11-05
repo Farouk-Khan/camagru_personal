@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<?php
+    if(session_id() == '' || !isset($_SESSION)){
+        session_start();
+      }
+?>
+<html>
+    <head>
+        <title>
+            Camagru
+        </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/main.css">
+    </head>
+    <body>
+        <div class="offset">
+            <div class="logo">
+                <h1>Welcome to Camagru</h1>
+            </div>
+            <div class="logHold">
+                <div class="group">
+                        <img src="../resourses/logLogo.png" width="100px" height="100px">
+                        <h2>Login</h2>
+                    <!--create login form-->
+                    <form method="POST" action="../php/verify.php">
+                        <label class="log" for="user"><b>Username</b></label>
+                        <input type="text" placeholder="Enter Username" name="user" required>
+                        <label class="log" for="passwd"><b>Password</b></label>
+                        <input type="password" placeholder="Enter Password" name="passwd" required>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+                <div class="group">
+                <!--create a sign in form-->
+                <form method="POST" action="../php/new_user.php">
+                    <h2>Sign Up</h2>
+                    <label class="log" for="nuser"><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" name="nuser" required>
+                    <label class="log" for="fname"><b>First Names</b></label>
+                    <input type="text" placeholder="Enter Username" name="fname" required>
+                    <label class="log" for="lname"><b>Last Name</b></label>
+                    <input type="text" placeholder="Enter Username" name="lname" required>
+                    <label class="log" for="email"><b>Email Adress</b></label>
+                    <input type="email" placeholder="Enter Email Address" name="email" required>
+                    <label class="log" for="passwd"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name=passwd required>
+                    <label class="log" for="npass"><b>Re-enter Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="npass" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
