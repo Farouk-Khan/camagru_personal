@@ -8,4 +8,7 @@
     <?php
     echo $_SESSION['username'];
     ?>
+    <div style="position:absolute;bottom:5px;right:10px;margin:5px;">
+        <span>edit profile</span>
+    </div>
 </div>
