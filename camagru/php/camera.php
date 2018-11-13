@@ -2,11 +2,20 @@
     <div class="animate undercam posCam">
         <video class="animate" autoplay="true" id="camera">
         </video>
+        <button id="startbutton">take pic</button>
+        <canvas id="canvas" width="200px" height="200px">
+        </canvas>
+        <br>
+        <img id="photo" alt="not working yet"> 
     </div>
 </div>
 <script>
 var video = document.querySelector("#camera");
- 
+var canvas = document.getElementById('canvas');
+var photo = document.getElementById('photo');
+var context = canvas.getContext('2d');
+var vendorUrl = window.URL || window.webkitURL;
+
  if (navigator.mediaDevices.getUserMedia) {       
      navigator.mediaDevices.getUserMedia({video: true})
    .then(function(stream) {
@@ -17,4 +26,8 @@ var video = document.querySelector("#camera");
    });
  }
 
+document.getElementById('startbutton').addEventListener('click', function() {
+        context.drawImage(video, 0, 0, 200, 200);
+        photo.setAttribute('src', canvas.toDataURL('image/png'));
+    })
 </script>
