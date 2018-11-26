@@ -6,7 +6,7 @@
     <img src="../resourses/logLogo.png" width="50%" height="20%">
     <h3>Hi</h3>
     <?php
-    echo $_SESSION['username'];
+    echo "<h3>".$_SESSION['username']."</h3>";
     ?>
     <div style="position:absolute;bottom:5px;right:10px;margin:5px;background-color:cornsilk;">
         <span style="cursor:pointer" onclick="document.getElementById('edit').style.display='block'">edit profile</span>

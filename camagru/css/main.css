@@ -213,4 +213,13 @@ li:hover, a:hover{
     height: 200px;
     width: 200px;
     background-color: #666;
+    transform: rotateY(180deg);
+}
+
+.err{
+    background-color: red;
+    border-radius: 30%;
+    font-size: 20px;
+    width: 60%;
+    margin: auto;
 }

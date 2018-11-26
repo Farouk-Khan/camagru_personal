@@ -13,6 +13,7 @@ try {
 } catch(PDOException $e){
     echo $sql. "<br>" .$e->getMessage();
 }
+$pdo = null;
 
 try{
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -25,11 +26,12 @@ try{
 		lname VARCHAR(255) NOT NULL,
 		email VARCHAR(255) NOT NULL,
 		passwd VARCHAR(255) NOT NULL,
-        type VARCHAR(20) NOT NULL default "user"
+        type VARCHAR(20) NOT NULL default "0"
         )';
       echo "no no ";
       $pdo->exec($sql);
-} catch(PDOException $e){
+    } catch(PDOException $e){
     echo $sql . "<br>" . $e->getMessage();
     }
+    $pdo = null;
 ?>

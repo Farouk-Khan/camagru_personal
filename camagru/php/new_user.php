@@ -10,9 +10,10 @@
     $pwd = hash('sha512', $_POST['passwd']);
     $npass = hash('sha512', $_POST['npass']);
 
-    if ($pwd !== $npass)
+    if ($pwd != $npass)
     {
         echo "incorrect password";
+        header("Location: ../html/login.phtml?err=". urlencode("The password you have entered does not match"));
         exit();
     }
     try {
@@ -25,6 +26,7 @@
         VALUES ('$nuser', '$fname', '$lname', '$email', '$pwd')");
 
         $pdo->commit();
+        header('Location: ../html/login.phtml');
         echo "New records created";
     } catch(PDOException $e) {
         $pdo->rollback();
