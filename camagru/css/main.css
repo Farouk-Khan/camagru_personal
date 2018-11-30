@@ -200,9 +200,14 @@ li:hover, a:hover{
     cursor: pointer;
 }
 
+#savebutton{
+    border-radius: 50%;
+    width: 40%;
+}
+
 #startbutton{
     border-radius: 50%;
-    width: 80%;
+    width: 40%;
 }
 
 #canvas{

@@ -24,4 +24,5 @@ window.onclick = function(event) {
     if (event.target == edit) {
         edit.style.display = "none";
     }
+}
 </script>
