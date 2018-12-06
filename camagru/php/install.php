@@ -26,7 +26,12 @@ try{
 		lname VARCHAR(255) NOT NULL,
 		email VARCHAR(255) NOT NULL,
 		passwd VARCHAR(255) NOT NULL,
-        type VARCHAR(20) NOT NULL default "0"
+        type VARCHAR(20) NOT NULL default "0");
+        CREATE TABLE images (
+        img_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        user_id INT(11) NOT NULL,
+        img_path VARCHAR(255) NOT NULL,
+        likes INT(11) default "0"
         )';
       echo "no no ";
       $pdo->exec($sql);

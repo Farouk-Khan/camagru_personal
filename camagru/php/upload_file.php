@@ -1,4 +1,5 @@
 <?php
+    echo "in";
     if(isset($_FILES['image'])){
         $imagefile = '../image/' . basename($_FILES['image']['name']);
         $imagesize = $_FILES['image']['size'];

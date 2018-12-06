@@ -1,18 +1,25 @@
 <div id="cam" class="logout">
     <div id="cam_hide" class="animate undercam posCam">
         <video class="animate" autoplay="true" id="camera">
+            <canvas id="overlay">
+            </canvas>
         </video>
         <div>
         <button id="savebutton">Save pic</button>
+        <button id="cancel">Cancel</button>
         <button id="startbutton">take pic</button>
         </div>
         <canvas id="canvas" width="200px" height="200px">
         </canvas>
-        <br>
-        <img id="photo"> 
-        <form action="upload.php" method="POST" enctype="multipart/form-data">
+        <img id="photo">
+        <form action="upload_file.php" method="POST" enctype="multipart/form-data">
             <input type="file" name="image" id="image">
             <input type="submit" name="submit" value="Save">
+        </form>
+        <form action="" method="POST" class="row">
+            <label class="container"><img class="trans" id="hair" src="../resourses/hairdo.png" width="200px" height="200px"><input type="checkbox" id="img1"><span class="checkmark"></span></label>
+            <label class="container"><img class="trans" id="lay" src="../resourses/Laser.png" width="200px" height="200px"><input type="checkbox" id="img2"><span class="checkmark"></span></label>
+            <label class="container"><img class="trans" id="sun" src="../resourses/sunshine.png" width="200px" height="200px"><input type="checkbox" id="img3"><span class="checkmark"></span></label>
         </form>
     </div>
 </div>
@@ -21,6 +28,14 @@ var video = document.querySelector("#camera");
 var canvas = document.getElementById('canvas');
 var photo = document.getElementById('photo');
 var context = canvas.getContext('2d');
+var img1 = document.getElementById('img1');
+var img2 = document.getElementById('img2');
+var img3 = document.getElementById('img3');
+var hair = document.getElementById('hair');
+var lay = document.getElementById('lay');
+var sun = document.getElementById('sun');
+var width = 500;
+var height = 375;
 var vendorUrl = window.URL || window.webkitURL;
 
  if (navigator.mediaDevices.getUserMedia) {       
@@ -33,21 +48,181 @@ var vendorUrl = window.URL || window.webkitURL;
    });
  }
 
-document.getElementById('startbutton').addEventListener('click', function() {
-        context.drawImage(video, 0, 0, 200, 200);
-        photo.setAttribute('src', canvas.toDataURL('image/png'));
+
+    
+
+function getRand() {
+    var rand = Math.floor((Math.random() * 10000) + 2);
+    return(rand);
+}
+
+function capture(rand) {
+    console.log('capture');
+
+    if(img1.checked && video.currentTime > 0 || 
+    img2.checked && video.currentTime > 0 || 
+    img3.checked && video.currentTime > 0){
+    var data = canvas.toDataURL('image/png');
+
+        console.log('first');
+
+    context.drawImage(video, 0, 0, 500, 375);
+    photo.setAttribute('src', data);
+    if (img1.checked)
+        filter = "../resourses/hairdo.png";
+    if (img2.checked)
+        filter = "../resourses/Laser.png";
+    if (img3.checked)
+        filter = "../resourses/sunshine.png";
+    
+        console.log(data);
+        console.log('second');
+
+    var xhr_mergeIN = new XMLHttpRequest();
+    mergeIN = new FormData();
+    mergeIN.append('action', 'merge');
+    mergeIN.append('data', data);
+    mergeIN.append('filter', filter);
+    mergeIN.append('tmp', rand);
+    xhr_mergeIN.open('POST', 'upload_image.php');
+    xhr_mergeIN.send(mergeIN);
+
+        console.log('third');
+
+    xhr_mergeIN.onreadystatechange = function () {
+        var DONE  = 4;
+        var OK    = 200;
+        if (xhr_mergeIN.readyState === DONE) {
+            if (xhr_mergeIN.status === OK) {
+                var output = xhr_mergeIN.responseText;
+                if (output == "ERROR") {
+                    console.log('del');
+            // del.click();
+            }
+            else {
+              var filtered = new Image();
+              filtered.src = output;
+
+              console.log(filtered.src);
+
+              context.clearRect(0, 0, canvas.width, canvas.height);
+              filtered.onload = function() {
+                context.drawImage(filtered, 0, 0, canvas.width, canvas.height);
+                    }
+                }
+            }
+        }
+    }
+}else if (img1.checked && video.currentTime == 0 || img2.checked && video.currentTime == 0 ||
+      img3.checked && video.currentTime == 0)
+    {
+        
+        console.log(below);
+
+      var upload = document.getElementById('uploadedFile');
+      upload.click();
+        upload.addEventListener("change", function() {
+        var file    = document.querySelector('input[type=file]').files[0];
+        var reader  = new FileReader();
+        reader.addEventListener("load", function () {
+            var data = reader.result;
+            if (img1.checked)
+              filter = "../resourses/hairdo.png";
+            if (img2.checked)
+              filter = "../resourses/Laser.png";
+            if (img2.checked)
+              filter = "../resourses/sunshine.png";
+
+            var mergeUpload = new FormData();
+            mergeUpload.append('action', 'merge');
+            mergeUpload.append('data', data);
+            mergeUpload.append('filter', filter);
+            mergeUpload.append('uploaded', upload.value);
+            mergeUpload.append('tmp', rand);
+            var xhr_mergeUpload = new XMLHttpRequest();
+            xhr_mergeUpload.open('POST', 'assets/processing.php');
+            xhr_mergeUpload.send(mergeUpload);
+            xhr_mergeUpload.onreadystatechange = function () {
+              var DONE  = 4;
+              var OK    = 200;
+              if (xhr_mergeUpload.readyState === DONE) {
+                if (xhr_mergeUpload.status === OK) {
+                  var output = xhr_mergeUpload.responseText;
+                  if (output == "ERROR")
+                    del.click();
+                else {
+                  var filtered    = new Image();
+                  filtered.src    = output;
+                  context.clearRect(0, 0, canvas.width, canvas.height);
+                  filtered.onload = function() {
+                    context.drawImage(filtered, 0, 0, canvas.width, canvas.height);
+                  }
+                }
+              }
+            }
+          }
+          }, false);
+          if (file)
+            reader.readAsDataURL(file);
+      });
+    }
+
+    console.log('end');
+
+}
+
+document.getElementById('startbutton').addEventListener('click', function(ev) {
+        // var data = canvas.toDataURL('image/png');
+        // context.drawImage(video, 0, 0, 200, 200);
+        
+        if (img1.checked){
+    console.log('image1 ' + img1.checked);
+    filter = "../resourses/hairdo.png";
+    hair.style.backgroundColor = 'transparent';
+    context.drawImage(video, 0, 0, width, height);
+    context.drawImage(hair, 0, 0, width, height);
+}
+if (img2.checked){
+    console.log('image2 ' + img2.checked);
+    filter = "../resourses/Laser.png";
+    lay.style.backgroundColor = 'transparent';
+    context.drawImage(video, 0, 0, width, heigth);
+    context.drawImage(lay, 0, 0, width, heigth);
+}
+if (img3.checked){
+    console.log('image3 ' + img3.checked);
+    filter = "../resourses/sunshine.png";
+    sun.style.backgroundColor = 'transparent';
+    context.drawImage(video, 0, 0, width, heigth);
+    context.drawImage(sun, 0, 0, width, heigth);
+}
+
+        console.log('start');
+        rand = getRand();
+        console.log(rand);
+        capture(rand);
+        ev.preventDefault();
+        video.pause();
     })
 
-$(document).ready(function(){
-    $('#savebutton').click(function() {
-        $.ajax({
-            url: "upload.php",
-            type: "POST",
-            data: canvas.toDataURL('image/png'),
-            contentType: false,
-            cache: false,
-            processData: false
-        });
-    });
-});
+document.getElementById('cancel').addEventListener('click', function() {
+    video.play();
+})
+
+document.getElementById('savebutton').addEventListener('click', function() {
+    video.play();
+    var newimage = new FormData();
+    newimage.append('action', 'save');
+    newimage.append('tmp', rand);
+    console.log("running save");
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'upload_image.php', true);
+    //xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onreadystatechange = function (data) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log("working");
+        }
+    }
+    xhr.send(newimage);
+})
 </script>
