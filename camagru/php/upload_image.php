@@ -12,24 +12,19 @@ $tmp = $_POST['tmp'];
 $path = $POST['path'];
 $upload = $_POST['uploaded'];
 
-include("config.php");
+include "config.php";
 
 function mergeImg($data, $filter, $user, $tmp) {
-
-	echo "merge";
-
 	list($type, $data) = explode(';', $data);
     list(, $data) = explode(',', $data);
 	$data = base64_decode($data);
-	
-	echo "<script>console.log('" . $data . "');</script>"; 
 
 	$rpath 	= 'images/' . $user . 'tmp' . $tmp . '.png';
 	$path 	= '../' . $rpath;
 	file_put_contents($path, $data);
 		
 	$og 	= imagecreatefrompng($path);
-	$src 	= imagecreatefrompng($filter);
+	//$src 	= imagecreatefrompng($filter);
 		
 	$result = imagecreatetruecolor(500, 375);
 
@@ -39,7 +34,7 @@ function mergeImg($data, $filter, $user, $tmp) {
 	imagefill($result, 0, 0, $trans_background);
 
 	imagecopy($result, $og, 0, 0, 0, 0, 500, 375);
-	imagecopy($result, $src, 0, 0, 0, 0, 500, 375);
+	//imagecopy($result, $src, 0, 0, 0, 0, 500, 375);
 		
 		
 	imagepng($result, $path);
@@ -51,11 +46,23 @@ function mergeImg($data, $filter, $user, $tmp) {
 }
 
 function saveImg($user, $tmp, $pdo) {
-	$path 			= '../images/' . $user . 'tmp' . $tmp . '.png';
+
+	echo "SAVING\n";
+
+	$rpath 	= 'images/' . $user . 'tmp' . $tmp . '.png';
+	$path 	= '../' . $rpath;
+
+	$pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+	$pdo->beginTransaction();
 
 	$DBuser 		= $pdo->quote($user);
 	$select 		= $pdo->query("SELECT * FROM Users WHERE username=$DBuser");
 	$ret 			= $select->rowCount();
+
+	echo "<script>console.log('" . $DBuser  . "');</script>";
+
 	if ($ret == 1) {
 		$result 	= $select->fetchAll();
 		$id 		= $result[0]['id'];
@@ -82,12 +89,21 @@ function del($user, $tmp) {
 	unlink($path);
 }
 
-if ($action === "merge")
-	mergeImg($data, $filter, $user, $tmp, $uploaded);
-else if ($action == "delete")
+echo "" . $action . "";
+echo "<script>console.log('RUNNING');</script>";
+
+if ($action == "delete"){
 	del($user, $tmp);
-else if ($action == "save")
+}
+else if ($action == "sv"){
+	echo "SAVE";
 	saveImg($user, $tmp, $pdo);
-else if ($action == "trash")
+}
+else if ($action == "trash"){
 	imgTrash($user, $path, $pdo);
+}
+else if ($action === "merge"){
+	mergeImg($data, $filter, $user, $tmp, $uploaded);
+}
+echo "<script>console.log('STOP');</script>";
 ?>

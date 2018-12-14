@@ -1,6 +1,6 @@
 <?php
     echo "hello world";
-    include 'config.php';
+    include "config.php";
     
     echo "<br>next";
     $nuser = $_POST['nuser'];

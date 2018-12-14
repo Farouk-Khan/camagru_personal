@@ -9,7 +9,7 @@
         <button id="cancel">Cancel</button>
         <button id="startbutton">take pic</button>
         </div>
-        <canvas id="canvas" width="200px" height="200px">
+        <canvas id="canvas" width="500px" height="375px">
         </canvas>
         <img id="photo">
         <form action="upload_file.php" method="POST" enctype="multipart/form-data">
@@ -48,8 +48,6 @@ var vendorUrl = window.URL || window.webkitURL;
    });
  }
 
-
-    
 
 function getRand() {
     var rand = Math.floor((Math.random() * 10000) + 2);
@@ -113,69 +111,15 @@ function capture(rand) {
             }
         }
     }
-}else if (img1.checked && video.currentTime == 0 || img2.checked && video.currentTime == 0 ||
-      img3.checked && video.currentTime == 0)
-    {
-        
-        console.log(below);
-
-      var upload = document.getElementById('uploadedFile');
-      upload.click();
-        upload.addEventListener("change", function() {
-        var file    = document.querySelector('input[type=file]').files[0];
-        var reader  = new FileReader();
-        reader.addEventListener("load", function () {
-            var data = reader.result;
-            if (img1.checked)
-              filter = "../resourses/hairdo.png";
-            if (img2.checked)
-              filter = "../resourses/Laser.png";
-            if (img2.checked)
-              filter = "../resourses/sunshine.png";
-
-            var mergeUpload = new FormData();
-            mergeUpload.append('action', 'merge');
-            mergeUpload.append('data', data);
-            mergeUpload.append('filter', filter);
-            mergeUpload.append('uploaded', upload.value);
-            mergeUpload.append('tmp', rand);
-            var xhr_mergeUpload = new XMLHttpRequest();
-            xhr_mergeUpload.open('POST', 'assets/processing.php');
-            xhr_mergeUpload.send(mergeUpload);
-            xhr_mergeUpload.onreadystatechange = function () {
-              var DONE  = 4;
-              var OK    = 200;
-              if (xhr_mergeUpload.readyState === DONE) {
-                if (xhr_mergeUpload.status === OK) {
-                  var output = xhr_mergeUpload.responseText;
-                  if (output == "ERROR")
-                    del.click();
-                else {
-                  var filtered    = new Image();
-                  filtered.src    = output;
-                  context.clearRect(0, 0, canvas.width, canvas.height);
-                  filtered.onload = function() {
-                    context.drawImage(filtered, 0, 0, canvas.width, canvas.height);
-                  }
-                }
-              }
-            }
-          }
-          }, false);
-          if (file)
-            reader.readAsDataURL(file);
-      });
-    }
-
+}
     console.log('end');
-
 }
 
 document.getElementById('startbutton').addEventListener('click', function(ev) {
         // var data = canvas.toDataURL('image/png');
         // context.drawImage(video, 0, 0, 200, 200);
         
-        if (img1.checked){
+    if (img1.checked){
     console.log('image1 ' + img1.checked);
     filter = "../resourses/hairdo.png";
     hair.style.backgroundColor = 'transparent';
@@ -186,43 +130,94 @@ if (img2.checked){
     console.log('image2 ' + img2.checked);
     filter = "../resourses/Laser.png";
     lay.style.backgroundColor = 'transparent';
-    context.drawImage(video, 0, 0, width, heigth);
-    context.drawImage(lay, 0, 0, width, heigth);
+    context.drawImage(video, 0, 0, width, height);
+    context.drawImage(lay, 0, 0, width, height);
 }
 if (img3.checked){
     console.log('image3 ' + img3.checked);
     filter = "../resourses/sunshine.png";
     sun.style.backgroundColor = 'transparent';
-    context.drawImage(video, 0, 0, width, heigth);
-    context.drawImage(sun, 0, 0, width, heigth);
+    context.drawImage(video, 0, 0, width, height);
+    context.drawImage(sun, 0, 0, width, height);
 }
 
         console.log('start');
         rand = getRand();
-        console.log(rand);
         capture(rand);
         ev.preventDefault();
         video.pause();
     })
 
 document.getElementById('cancel').addEventListener('click', function() {
+
+    console.log("DEL");
+    var xhr_del = new XMLHttpRequest();
+    var del = new FormData();
+    del.append('action', 'delete');
+    del.append('tmp', rand);
+    xhr_del.open('POST', 'upload_image.php');
+    xhr_del.send(del);
+    xhr_del.onreadystatechange = function (){
+        if(xhr_del.status === 4)
+            if(xhr_del.status === 200){
+                var output = xhr_del.responseText;
+                if (output == "ERROR"){
+                    console.log("ERROR");
+                }
+                else{
+                    var filtered = new Image();
+                    filtered.src = output;
+                    console.log(filtered.src);
+                }
+            }
+    }
     video.play();
 })
 
 document.getElementById('savebutton').addEventListener('click', function() {
     video.play();
+
+    console.log("running save");
+
+    var xhr = new XMLHttpRequest();
     var newimage = new FormData();
     newimage.append('action', 'save');
-    newimage.append('tmp', rand);
-    console.log("running save");
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'upload_image.php', true);
-    //xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.onreadystatechange = function (data) {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log("working");
-        }
-    }
+    newimage.append('tmp', rand); ype', 'application/json');
     xhr.send(newimage);
+    
+    console.log("after POST\n");
+
+    xhr.onreadystatechange = function () {
+        var DONE  = 4;
+        var OK    = 200;
+
+        console.log("in if\n");
+        var stat = xhr.readyState;
+        console.log(stat);
+
+        if (xhr.readyState === 4) {
+            if (xhr.status === OK) {
+                var output = xhr.responseText;
+                if (output == "ERROR") {
+                    console.log("BROKE");
+                }else{
+                    var filtered = new Image();
+              filtered.src = output;
+
+              console.log(filtered.src);
+                    console.log('WORKS');
+                }
+            // del.click();
+            }
+            }
+        }
+        // if (xhr.readyState == 4 && xhr.status == 200) {
+        //     console.log("working");
+        // }else{
+        //     console.log("BROKE");
+        // }
+        // xhr.setRequestHeader('Content-type', 'application/json');
+
 })
+
 </script>
