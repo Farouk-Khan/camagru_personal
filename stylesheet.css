@@ -1,0 +1,285 @@
+* {
+    margin: 0;
+    border: none;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+ header{
+    width:100%;
+    height:6vh;
+    background-image: url("https://wonderfulengineering.com/wp-content/uploads/2014/06/star-wallpapers-22.jpg");
+    color:white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-shadow: 2px 2px 2px 2px;
+    text-align: center;
+    line-height: 6vh;
+    display:block;
+    text-decoration: none;
+    font-size:2.5vh;
+    padding: 1rem 0;
+}
+header h1 {
+    text-shadow: 2px 2px 2px black;
+}
+#navi{
+    width:100%;
+    height: 6vh;
+    background-color: rgb(54, 54, 97);
+    display:flex;
+    flex: wrap;
+    justify-content: center;
+    line-height: 6vh;
+}
+
+#options {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+#camera video {
+    display: block;
+    width: 90%;
+    margin: 5px auto;
+}
+
+#export {
+    display: none;
+}
+
+#camera button, #image_upload button, #export button, #startbutton {
+    display: block;
+    margin: 5px auto;
+    width: 90%;
+    padding: 1rem 0;
+    font-size: .8rem;
+    background: rgb(75, 75, 105);
+    color: rgb(3, 3, 37);
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+#sidebar {
+    text-align: center;
+}
+
+.sticker_select {
+    text-align: center;
+}
+
+#sticker_image {
+    width: 150px;
+    height: 150px;
+}
+
+#navi a{
+    font-size: 2vh;
+    padding-right: 2vh;
+    text-decoration-line: none;
+    color:rgb(3, 3, 37);
+}
+
+#navi a:hover{
+    color:#999;
+}
+
+#navi a:active{
+    color:midnightblue;
+}
+
+
+#footer {
+    background-image: url("https://wonderfulengineering.com/wp-content/uploads/2014/06/star-wallpapers-22.jpg");
+    padding: 1rem 0;
+    width: 100%;
+    height: 3vh;
+    line-height: 1vh;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+}
+
+#main h1 {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    background: rgb(3, 3, 37);
+    padding: 1rem 0;
+    margin-top: 50px;
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+    text-shadow: 1px 1px 5px #000;
+}
+
+#main2 canvas {
+    width: 90%;
+    display: block;
+    margin: 5px auto;
+}
+
+#image_upload {
+    text-align: center;
+}
+
+#image_upload * {
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+}
+
+
+.photo_block {
+    margin-bottom: 5px;
+}
+
+.photo_block img {
+    display: inline-block;
+    float: left;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.buttons {
+    text-align: center;
+}
+
+.buttons button {
+    background: #fff;
+}
+
+.buttons button:hover {
+    cursor: pointer;
+}
+
+button .like {
+    display: inline-block;
+    width: 20px;
+}
+
+#account h1 {
+    font-size: 3vmin;
+}
+
+#account label {
+    font-size: 2vmin;
+}
+
+#account .input {
+    display: block;
+    padding: .5rem 0;
+    width: 80%;
+    text-indent: 10px;
+    margin: 10px auto;
+    border-bottom: 2px solid rgb(3, 3, 37);
+}
+
+.field_wrap {
+    text-align: left;
+    width: 80%;
+    padding: .5rem 0;
+    margin: 0 auto;
+}
+
+.field_wrap input[type="text"], .field_wrap input[type="email"], .field_wrap input[type="password"] {
+    width: 60%;
+    border-bottom: 2px solid rgb(3, 3, 37);
+}
+
+.options {
+    text-align: center;
+}
+
+.options button {
+    padding: .5rem 1rem;
+    background: rgb(3, 3, 37);
+    color: #fff;
+    font-weight: bold;
+    transition: background-color .5s;
+    border-radius: 5px;
+}
+
+.options button:hover {
+    background: #999;
+    cursor: pointer;
+}
+
+#signup, #login, #account {
+    width: 80%;
+    padding: 2rem 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgb(3, 3, 37);
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px #d0d0d0;
+}
+
+#signup form input, #login form input {
+    display: block;
+    width: 80%;
+    text-indent: 10px;
+    height: 20px;
+    margin: 10px auto;
+    border-bottom: 1px solid rgb(3, 3, 37);
+}
+
+#signup form button, #login form button {
+    width: 80%;
+    display: block;
+    margin: 30px auto 0 auto;
+    background: rgb(3, 3, 37);
+    padding: .5rem 0;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+#signup form button:hover, #login form button:hover {
+    background: #999;
+    cursor: pointer;
+
+}
+
+#login form button {
+    margin-top: 15px;
+}
+
+#login a {
+    display: block;
+    width: 80%;
+    text-align: right;
+    margin: 0px auto;
+    text-decoration: none;
+    color: rgb(3, 3, 37);
+    margin-top: 20px;
+}
+
+#login a:hover {
+    color: #999;
+}
+
+#contact {
+    width: 80%;
+    margin: 50px auto;
+}
+
+#contact h4 {
+    font-size: 1rem;
+}
+
+.container {
+    height: 95vh;
+}
+
+iframe{
+    background: white;
+}
+
+#page a:active{
+    color: rgb(3, 3, 37);
+}
